@@ -97,5 +97,8 @@ for ticker in tickers:
     list_of_data.append(download_data(ticker))
 
 # lastly, create the stocks.json file
-with open("stocks.json", "w") as file:
-    dump(list_of_data, file)
+try:
+    with open("stocks.json", "w") as file:
+        dump(list_of_data, file)
+except Exception as e:
+    print(e)
