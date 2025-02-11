@@ -1,8 +1,11 @@
 """
-This module creates a function that imports NASDAQ data on stocks in the years 2020-2024 from the web
+This module creates a function that imports NASDAQ data on stocks in the years 2020-2024 from the web,
+processes that data, and imports the results to a JSON file
 """
 
 from requests import get
+from sys import argv
+from json import dump
 
 def download_data(ticker: str) -> dict:
     """
@@ -83,4 +86,16 @@ def download_data(ticker: str) -> dict:
 
     return processed_data
 
-download_data("AAPL")
+# get any ticker symbols given when the program is called
+tickers = argv.pop(0) # remove argv[0], which is the filename; all other items in the list are ticker symbols
+
+# this is the list that will be converted to json
+list_of_data = list()
+
+for ticker in tickers:
+    # add a dictionary to the list for each given ticker
+    list_of_data.append(download_data(ticker))
+
+# lastly, create the stocks.json file
+with open("stocks.json", "w") as file:
+    dump(list_of_data, file)
